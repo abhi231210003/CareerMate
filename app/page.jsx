@@ -17,7 +17,7 @@ export default function Home() {
 
       <HeroSection />
 
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
+      <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl font-bold tracking-tighter text-center mb-12">
             Powerful Features for Your Career Growth
@@ -25,17 +25,17 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {features.map((feature, index) => {
               return (
-                <Card
-                  key={index}
-                  className="border-2 hover:border-primary transition-colors duration-300">
-                  <CardContent className="pt-6 text-center flex flex-col items-center">
-                    <div className="flex flex-col items-center justify-center">
-                      {feature.icon}
-                      <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                      <p className="text-muted-foreground">{feature.description}</p>
-                    </div>
-                  </CardContent>
-                </Card>
+                <Link key={index} href={feature.href} className="block">
+                  <Card className="h-full border-2 transition-colors duration-300 hover:border-primary hover:shadow-lg">
+                    <CardContent className="pt-6 text-center flex flex-col items-center">
+                      <div className="flex flex-col items-center justify-center">
+                        {feature.icon}
+                        <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                        <p className="text-muted-foreground">{feature.description}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               );
             })}
           </div>
@@ -43,7 +43,7 @@ export default function Home() {
       </section>
 
 
-      <section className="w-full py-12 md:py-24 bg-muted/50">
+      <section id="stats" className="w-full py-12 md:py-24 bg-muted/50">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             <div className="flex flex-col items-center justify-center space-y-2">
@@ -67,7 +67,7 @@ export default function Home() {
       </section>
 
 
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
+      <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl font-bold mb-4">
@@ -94,7 +94,7 @@ export default function Home() {
       </section>
 
 
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
+      <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32 bg-muted/50">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl font-bold tracking-tighter text-center mb-12">
             What Our Users Say
@@ -145,7 +145,7 @@ export default function Home() {
       </section>
 
 
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
+      <section id="faqs" className="w-full py-12 md:py-24 lg:py-32 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center max-w-3xl mx-auto mb-12">
             <h2 className="text-3xl font-bold mb-4">
