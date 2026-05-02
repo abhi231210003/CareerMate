@@ -25,7 +25,6 @@ Advance your career with personalized guidance, AI-driven interview prep, smart 
 - [Project Structure](#-project-structure)
 - [Key Modules](#-key-modules)
 - [Database Schema](#-database-schema)
-- [Deployment](#-deployment)
 
 ---
 
@@ -126,12 +125,9 @@ NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
 NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/onboarding
 
-# AI (Gemini / OpenAI)
-GEMINI_API_KEY=your_ai_api_key
+# AI (OpenRouter)
+OPENROUTER_API_KEY=your_ai_api_key
 
-# Inngest (Background Jobs)
-INNGEST_EVENT_KEY=your_inngest_event_key
-INNGEST_SIGNING_KEY=your_inngest_signing_key
 ```
 
 ---
@@ -206,23 +202,6 @@ The app uses **PostgreSQL** via **Prisma ORM** with the following core models:
 
 ---
 
-## ☁️ Deployment
 
-The easiest way to deploy Sensai is on [Vercel](https://vercel.com/):
 
-1. Push your code to GitHub
-2. Import the repository into Vercel
-3. Add all required [environment variables](#-environment-variables)
-4. Deploy!
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
-> Make sure to run `npx prisma migrate deploy` as part of your build step or after deployment to apply database migrations.
-
----
-
-<div align="center">
-
-Built with ❤️ using Next.js, Prisma, Clerk, and AI
-
-</div>
