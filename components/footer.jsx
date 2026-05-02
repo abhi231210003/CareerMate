@@ -60,7 +60,6 @@ const Footer = () => {
         <div className="mt-12 flex flex-col gap-4 border-t border-border/40 pt-6 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
           <p>© 2026 SENSAI. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <span>Made with ❤️ by Abhishek</span>
             <Button variant="ghost" size="icon" onClick={scrollToTop} aria-label="Scroll to top">
               <ArrowUp className="h-4 w-4" />
             </Button>
