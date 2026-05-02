@@ -2,11 +2,7 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { geminiRateLimiter } from "@/lib/rate-limiter";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+import { generateWithOpenRouter } from "@/lib/openrouter";
 
 export async function generateQuiz() {
     const { userId } = await auth();
@@ -43,11 +39,21 @@ export async function generateQuiz() {
   `;
 
 
-        const result = await geminiRateLimiter.execute(() => model.generateContent(prompt));
-        const response = result.response;
-        const text = response.text();
-        const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
-        const quiz = JSON.parse(cleanedText);
+        const text = await generateWithOpenRouter(prompt, { temperature: 0.2 });
+        const cleanedText = String(text).replace(/```(?:json)?\n?/g, "").trim();
+
+        let quiz;
+        try {
+          quiz = JSON.parse(cleanedText);
+        } catch (parseError) {
+          console.error("Invalid JSON from AI while generating quiz:", { cleanedText, parseError });
+          throw new Error("Invalid JSON returned from AI");
+        }
+
+        if (!quiz || !Array.isArray(quiz.questions)) {
+          console.error("AI returned unexpected quiz structure:", { quiz, cleanedText });
+          throw new Error("AI returned unexpected quiz format");
+        }
 
         return quiz.questions;
     } catch (error) {
@@ -99,9 +105,8 @@ export async function saveQuizResult(questions, answers, score) {
             `;
 
         try {
-            const tipResult = await geminiRateLimiter.execute(() => model.generateContent(improvementPrompt));
-
-            improvementTip = tipResult.response.text().trim();
+            const tipText = await generateWithOpenRouter(improvementPrompt);
+            improvementTip = String(tipText).replace(/```(?:json)?\n?/g, "").trim();
             console.log(improvementTip);
         } catch (error) {
             console.error("Error generating improvement tip:", error);

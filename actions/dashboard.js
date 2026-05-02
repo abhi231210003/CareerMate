@@ -2,11 +2,7 @@
 
 import { db } from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { geminiRateLimiter } from "@/lib/rate-limiter";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+import { generateWithOpenRouter } from "@/lib/openrouter";
 
 export const generateAIInsights = async (industry) => {
   const prompt = `
@@ -29,9 +25,7 @@ export const generateAIInsights = async (industry) => {
           Include at least 5 skills and trends.
         `;
 
-  const result = await geminiRateLimiter.execute(() => model.generateContent(prompt));
-  const response = result.response;
-  const text = response.text();
+  const text = await generateWithOpenRouter(prompt, { temperature: 0.2 });
   const cleanedText = text.replace(/```(?:json)?\n?/g, "").trim();
 
   return JSON.parse(cleanedText);
@@ -48,6 +42,10 @@ export async function getIndustryInsights() {
 
     if (!user) throw new Error("User not found");
 
+    if (!user.industry) {
+        throw new Error("User industry not set");
+    }
+
     if (!user.industryInsight) {
         const insights=await generateAIInsights(user.industry);
 
@@ -55,10 +53,26 @@ export async function getIndustryInsights() {
             data: {
                 industry: user.industry,
                 ...insights,
+                lastUpdated: new Date(),
                 nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week from now
             },
         });
         return industryInsight;
     }
+
+    const now = new Date();
+    if (new Date(user.industryInsight.nextUpdate) <= now) {
+      const insights = await generateAIInsights(user.industry);
+      const refreshedInsight = await db.industryInsight.update({
+        where: { industry: user.industry },
+        data: {
+          ...insights,
+          lastUpdated: now,
+          nextUpdate: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
+        },
+      });
+      return refreshedInsight;
+    }
+
     return user.industryInsight;
 }
