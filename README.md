@@ -1,36 +1,228 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<div align="center">
 
-## Getting Started
+# 🧠 CareerMate — AI Career Coach
 
-First, run the development server:
+**Your personal AI-powered career coach for professional success.**
+
+Advance your career with personalized guidance, AI-driven interview prep, smart resume building, and real-time industry insights — all in one platform.
+
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://reactjs.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma)](https://www.prisma.io/)
+[![Clerk](https://img.shields.io/badge/Auth-Clerk-6C47FF?logo=clerk)](https://clerk.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [Project Structure](#-project-structure)
+- [Key Modules](#-key-modules)
+- [Database Schema](#-database-schema)
+- [Deployment](#-deployment)
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 🤖 **AI-Powered Career Guidance** | Get personalized career advice and insights powered by advanced AI technology |
+| 🎤 **Interview Preparation** | Practice with role-specific questions and receive instant AI feedback |
+| 📊 **Industry Insights** | Stay ahead with real-time industry trends, salary data, and market analysis |
+| 📄 **Smart Resume Builder** | Generate ATS-optimized resumes with AI assistance |
+| ✉️ **Cover Letter Generator** | Create tailored, compelling cover letters for any job application |
+| 📈 **Progress Tracking** | Monitor your improvement with detailed performance analytics |
+
+### By the Numbers
+- **50+** Industries Covered
+- **1000+** Interview Questions
+- **95%** Success Rate
+- **24/7** AI Support
+
+---
+
+## 🛠 Tech Stack
+
+| Layer | Technology |
+|---|---|
+| **Framework** | [Next.js 15](https://nextjs.org/) (App Router) |
+| **UI Library** | [React 19](https://reactjs.org/) |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) |
+| **Authentication** | [Clerk](https://clerk.com/) |
+| **Database ORM** | [Prisma](https://www.prisma.io/) |
+| **Database** | PostgreSQL |
+| **Background Jobs** | [Inngest](https://www.inngest.com/) |
+| **Forms** | React Hook Form + Zod |
+| **Charts** | Recharts |
+| **PDF Export** | html2pdf.js |
+| **Markdown Editor** | @uiw/react-md-editor |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- PostgreSQL database
+- [Clerk](https://clerk.com/) account
+- [Inngest](https://www.inngest.com/) account (for background jobs)
+
+### Installation
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/abhi231210003/sensai.git
+cd sensai
+```
+
+2. **Install dependencies**
+
+```bash
+npm install
+```
+
+3. **Set up environment variables**
+
+Create a `.env` file in the root directory (see [Environment Variables](#-environment-variables)).
+
+4. **Set up the database**
+
+```bash
+npx prisma migrate dev
+```
+
+5. **Start the development server**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔐 Environment Variables
 
-## Learn More
+Create a `.env` file in the project root with the following variables:
 
-To learn more about Next.js, take a look at the following resources:
+```env
+# Database
+DATABASE_URL="postgresql://user:password@host:port/dbname"
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
+CLERK_SECRET_KEY=sk_...
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/onboarding
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# AI (Gemini / OpenAI)
+GEMINI_API_KEY=your_ai_api_key
 
-## Deploy on Vercel
+# Inngest (Background Jobs)
+INNGEST_EVENT_KEY=your_inngest_event_key
+INNGEST_SIGNING_KEY=your_inngest_signing_key
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📁 Project Structure
+
+```
+sensai/
+├── actions/             # Server actions
+│   ├── cover-letter.js
+│   ├── dashboard.js
+│   ├── interview.js
+│   ├── resume.js
+│   └── user.js
+├── app/
+│   ├── (auth)/          # Sign-in / Sign-up pages
+│   ├── (main)/          # Protected app pages
+│   │   ├── ai-cover-letter/
+│   │   ├── dashboard/
+│   │   ├── interview/
+│   │   ├── onboarding/
+│   │   └── resume/
+│   └── api/             # API routes (Inngest)
+├── components/          # Reusable UI components
+│   ├── ui/              # shadcn/ui primitives
+│   ├── hero.jsx
+│   ├── header.jsx
+│   └── footer.jsx
+├── data/                # Static data (features, FAQs, etc.)
+├── hooks/               # Custom React hooks
+├── lib/                 # Utility functions & Prisma client
+├── prisma/
+│   └── schema.prisma    # Database schema
+├── public/              # Static assets
+├── middleware.js        # Clerk authentication middleware
+└── next.config.mjs
+```
+
+---
+
+## 🔑 Key Modules
+
+### 🎯 Dashboard
+Personalized home screen showing industry insights, salary trends, and a snapshot of your career preparation progress.
+
+### 📝 Resume Builder
+An AI-assisted markdown editor that helps craft ATS-optimized resumes. Supports PDF export and provides an ATS score with feedback.
+
+### ✉️ Cover Letter Generator
+Generates tailored cover letters based on the job description, company name, and job title. Stores multiple drafts per user.
+
+### 🎤 Interview Preparation
+AI-generated mock interview questions specific to your industry and role. Tracks your quiz scores and provides improvement tips.
+
+### 📊 Industry Insights
+Real-time data on salary ranges, market outlook, growth rate, demand levels, top skills, and key industry trends.
+
+### 🛤️ Onboarding
+Guided setup where users select their industry and enter professional details to personalize the entire platform experience.
+
+---
+
+## 🗄️ Database Schema
+
+The app uses **PostgreSQL** via **Prisma ORM** with the following core models:
+
+- **User** — Profile, skills, industry, and experience
+- **Assessment** — Quiz results and AI-generated improvement tips
+- **Resume** — Markdown content with ATS score and feedback
+- **CoverLetter** — Generated cover letters with job/company context
+- **IndustryInsight** — Aggregated salary, trends, and market data per industry
+
+---
+
+## ☁️ Deployment
+
+The easiest way to deploy Sensai is on [Vercel](https://vercel.com/):
+
+1. Push your code to GitHub
+2. Import the repository into Vercel
+3. Add all required [environment variables](#-environment-variables)
+4. Deploy!
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+
+> Make sure to run `npx prisma migrate deploy` as part of your build step or after deployment to apply database migrations.
+
+---
+
+<div align="center">
+
+Built with ❤️ using Next.js, Prisma, Clerk, and AI
+
+</div>
